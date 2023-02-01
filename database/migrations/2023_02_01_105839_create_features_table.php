@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('content',255);
             $table->string('icon',50);
             $table->integer('order');
-            $table->foreign('lang_id')->references('id')->on('langs');
+            $table->foreignId('lang_id')->constrained('langs');
         });
     }
 
