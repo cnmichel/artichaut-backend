@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name', 50);
             $table->string('icon', 50);
-            $table->text("url");
+            $table->text('url');
             $table->int('order');
             $table->foreignId('lang_id')->constrained('langs');
         });
