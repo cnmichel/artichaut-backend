@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('name',50);
-            $table->decimal('price');
+            $table->decimal('price', 5);
             $table->foreignId('lang_id')->constrained('langs');
         });
     }
