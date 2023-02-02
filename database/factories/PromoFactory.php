@@ -17,7 +17,9 @@ class PromoFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title'=>fake()->sentence(1),
+            'content'=>fake()->paragraph(),
+            'lang_id' => fake()->randomElement([1, 2]),            
         ];
     }
 }

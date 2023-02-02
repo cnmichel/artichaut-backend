@@ -17,7 +17,11 @@ class SocialFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'name'=>fake()->sentences(1),
+            'icon'=>fake()->url(),
+            'url'=>fake()->url(),
+            'order'=>fake()->shuffle([1,2,3,4,5,6]),
+            'lang_id' => fake()->randomElement([1, 2]),
         ];
     }
 }
