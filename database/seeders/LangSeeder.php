@@ -14,6 +14,9 @@ class LangSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('langs')->insert([
+            ['code' => 'fr_FR'],
+            ['code' => 'en_EN'],
+        ]);
     }
 }
