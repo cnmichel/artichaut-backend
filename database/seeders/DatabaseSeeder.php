@@ -19,6 +19,9 @@ class DatabaseSeeder extends Seeder
             LangSeeder::class,
             FeatureSeeder::class,
             ProductSeeder::class,
+            SitemapSeeder::class,
+            Social::class,
+            Promo::class,
         ]);
     }
 }
