@@ -17,9 +17,9 @@ class SitemapFactory extends Factory
     public function definition()
     {
         return [
-            'name'=>fake()->sentences(1),
+            'name'=>fake()->word(),
             'url' =>fake()->url(),
-            'order'=>fake()->shuffle([1,2,3,4,5,6]),
+            'order'=>fake()->randomDigit(),
             'lang_id' => fake()->randomElement([1, 2]),
         ];
     }

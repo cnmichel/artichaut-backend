@@ -17,7 +17,9 @@ class ReviewFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => fake()->sentence(5),
+            'rating' => fake()->randomDigitNot(0,6,7,8,9),
+            'content' => fake()->text()
         ];
     }
 }
