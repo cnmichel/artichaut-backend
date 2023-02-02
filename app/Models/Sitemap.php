@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Sitemap extends Model
 {
     use HasFactory;
+
+    public function langs()
+    {
+        return $this->hasMany(langs::class);
+    }
 }
