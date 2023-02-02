@@ -14,6 +14,8 @@ class SitemapSeeder extends Seeder
      */
     public function run()
     {
-        //
+        Sitemaps::factory()
+            ->count(10)
+            ->create();
     }
 }
