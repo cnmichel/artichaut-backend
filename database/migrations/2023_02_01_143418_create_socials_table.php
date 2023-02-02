@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('name', 50);
             $table->string('icon', 50);
             $table->text('url');
-            $table->int('order');
+            $table->integer('order');
             $table->foreignId('lang_id')->constrained('langs');
         });
     }

@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('title', 50);
             $table->integer('rating');
             $table->text('content');
-            $table->foreignId('user_id')->constrained('customers');
+            $table->foreignId('user_id')->constrained('customers', 'user_id');
         });
     }
 
