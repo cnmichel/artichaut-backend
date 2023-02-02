@@ -19,7 +19,8 @@ class ArticleFactory extends Factory
         return [
             'title' => fake()->sentence(9, true),
             'content' => fake()->text(),
-            'image' => fake()->imageUrl()
+            'image' => fake()->imageUrl(),
+            'lang_id' => fake()->randomElement([1,2])
         ];
     }
 }
