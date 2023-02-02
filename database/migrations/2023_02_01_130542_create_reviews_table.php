@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('title', 50);
+            $table->string('title', 100);
             $table->integer('rating');
             $table->text('content');
-            $table->foreignId('user_id')->constrained('customers', 'user_id');
+            $table->foreignId('customer_id')->constrained('customers');
         });
     }
 

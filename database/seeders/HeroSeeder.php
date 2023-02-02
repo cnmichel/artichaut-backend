@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class HeroSeeder extends Seeder
 {
@@ -18,7 +19,8 @@ class HeroSeeder extends Seeder
             'title' => fake()->sentence(3),
             'subtitle' => fake()->sentence(6),
             'image' => fake()->imageUrl(),
-            'cta' => []
+            'cta' => "[]",
+            'lang_id' => 1
         ]);
     }
 }

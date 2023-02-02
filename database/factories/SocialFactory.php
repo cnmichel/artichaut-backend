@@ -18,7 +18,7 @@ class SocialFactory extends Factory
     {
         return [
             'name'=>fake()->word(),
-            'icon'=>fake()->url(),
+            'icon'=>fake()->word(),
             'url'=>fake()->url(),
             'order'=>fake()->randomDigit(),
             'lang_id' => fake()->randomElement([1, 2]),

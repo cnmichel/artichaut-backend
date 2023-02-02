@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Sitemap;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class SitemapSeeder extends Seeder
+class UserSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,7 +15,7 @@ class SitemapSeeder extends Seeder
      */
     public function run()
     {
-        Sitemap::factory()
+        User::factory()
             ->count(10)
             ->create();
     }

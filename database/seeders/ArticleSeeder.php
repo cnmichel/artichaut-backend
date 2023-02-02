@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Article;
+use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -14,9 +16,11 @@ class ArticleSeeder extends Seeder
      */
     public function run()
     {
+        $user = User::factory()->create();
+
         Article::factory()
             ->count(10)
-            ->hasUsers(1)
+            ->for($user)
             ->create();
     }
 }

@@ -18,7 +18,7 @@ class FeatureFactory extends Factory
     {
         return [
             'title' => fake()->sentence(3),
-            'content' => fake()->sentence(25),
+            'content' => fake()->sentence(15),
             'icon' => fake()->sentence(1),
             'order' => fake()->randomDigit(),
             'lang_id' => fake()->randomElement([1, 2]),

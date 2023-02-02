@@ -14,7 +14,7 @@ class Article extends Model
      */
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->belongsTo(User::class);
     }
 
     /**
@@ -22,6 +22,6 @@ class Article extends Model
      */
     public function lang()
     {
-        return $this->hasOne(Lang::class);
+        return $this->belongsTo(Lang::class);
     }
 }
