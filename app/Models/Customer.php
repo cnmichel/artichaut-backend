@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Customer extends Model
 {
     use HasFactory;
+
+    /**
+     * Get the user associated with the customer.
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
 }
