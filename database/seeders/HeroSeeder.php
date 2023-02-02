@@ -14,6 +14,11 @@ class HeroSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('heroes')->insert([
+            'title' => fake()->sentence(3),
+            'subtitle' => fake()->sentence(6),
+            'image' => fake()->imageUrl(),
+            'cta' => []
+        ]);
     }
 }
