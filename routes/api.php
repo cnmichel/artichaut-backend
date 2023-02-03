@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\API\RegisterController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\LangController;
@@ -26,19 +27,22 @@ use App\Http\Controllers\API\SocialController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::controller(RegisterController::class)->group(function(){
+    Route::post('register','register');
+    Route::post('login','login');
 });
 
-Route::apiResource('langs', LangController::class);
-Route::apiResource('roles', RoleController::class);
-Route::apiResource('users', UserController::class);
-Route::apiResource('customers', CustomerController::class);
-Route::apiResource('reviews', ReviewController::class);
-Route::apiResource('heroes', HeroController::class);
-Route::apiResource('articles', ArticleController::class);
-Route::apiResource('features', FeatureController::class);
-Route::apiResource('products', ProductController::class);
-Route::apiResource('promos', PromoController::class);
-Route::apiResource('sitemaps', SitemapController::class);
-Route::apiResource('socials', SocialController::class);
+Route::middleware('auth:sanctum')->group( function () {
+    Route::apiResource('socials', SocialController::class);
+    Route::apiResource('langs', LangController::class);
+    Route::apiResource('roles', RoleController::class);
+    Route::apiResource('users', UserController::class);
+    Route::apiResource('customers', CustomerController::class);
+    Route::apiResource('reviews', ReviewController::class);
+    Route::apiResource('heroes', HeroController::class);
+    Route::apiResource('articles', ArticleController::class);
+    Route::apiResource('features', FeatureController::class);
+    Route::apiResource('products', ProductController::class);
+    Route::apiResource('promos', PromoController::class);
+    Route::apiResource('sitemaps', SitemapController::class);
+});
