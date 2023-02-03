@@ -9,6 +9,19 @@ class Feature extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'title',
+        'content',
+        'icon',
+        'order',
+        'lang_id'
+    ];
+
     public function lang()
     {
         return $this->hasOne(Lang::class);

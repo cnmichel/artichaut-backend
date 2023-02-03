@@ -9,6 +9,19 @@ class Social extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'icon',
+        'url',
+        'order',
+        'lang_id'
+    ];
+
     public function langs()
     {
         return $this->hasMany(langs::class);

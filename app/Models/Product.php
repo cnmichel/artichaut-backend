@@ -9,6 +9,17 @@ class Product extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'price',
+        'lang_id'
+    ];
+
     public function lang()
     {
         return $this->hasOne(Lang::class);

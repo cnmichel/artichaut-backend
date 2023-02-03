@@ -10,6 +10,19 @@ class Article extends Model
     use HasFactory;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'title',
+        'content',
+        'image',
+        'user_id',
+        'lang_id'
+    ];
+
+    /**
      * Get the user associated with the article.
      */
     public function user()
