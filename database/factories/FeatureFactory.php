@@ -17,7 +17,7 @@ class FeatureFactory extends Factory
     public function definition()
     {
         return [
-            'title' => fake()->sentence(3),
+            'name' => fake()->sentence(3),
             'content' => fake()->sentence(15),
             'icon' => fake()->sentence(1),
             'order' => fake()->randomDigit(),
