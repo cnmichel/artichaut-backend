@@ -2,7 +2,7 @@
 
 namespace App\Exceptions;
 
-use Illuminate\Auth\AuthenticationException;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -66,7 +66,7 @@ class Handler extends ExceptionHandler
             }
         });
 
-        $this->renderable(function (AuthenticationException $e, $request) {
+        $this->renderable(function (AuthorizationException $e, $request) {
             if ($request->is('api/*')) {
                 return response()->json([
                     'message' => "Non autorisé."
