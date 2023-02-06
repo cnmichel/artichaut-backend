@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('promos', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('title', 100);
+            $table->string('name', 50);
             $table->text('content');
             $table->boolean('active')->default(0);
             $table->foreignId('lang_id')->constrained('langs');

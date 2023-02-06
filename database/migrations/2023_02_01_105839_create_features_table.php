@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('features', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('title',50);
+            $table->string('name',50);
             $table->string('content',255);
             $table->string('icon',50);
             $table->integer('order');
