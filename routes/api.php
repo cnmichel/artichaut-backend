@@ -27,22 +27,38 @@ use App\Http\Controllers\API\SocialController;
 |
 */
 
+// Route d'API pour la création et la connection du compte
 Route::controller(RegisterController::class)->group(function(){
     Route::post('register','register');
     Route::post('login','login');
 });
 
+// Route d'API pour récupérer les données
+Route::apiResource('langs', LangController::class)->only(['index', 'show']);
+Route::apiResource('roles', RoleController::class)->only(['index', 'show']);
+Route::apiResource('users', UserController::class)->only(['index', 'show']);
+Route::apiResource('customers', CustomerController::class)->only(['index', 'show']);
+Route::apiResource('reviews', ReviewController::class)->only(['index', 'show']);
+Route::apiResource('heroes', HeroController::class)->only(['index', 'show']);
+Route::apiResource('articles', ArticleController::class)->only(['index', 'show']);
+Route::apiResource('features', FeatureController::class)->only(['index', 'show']);
+Route::apiResource('products', ProductController::class)->only(['index', 'show']);
+Route::apiResource('promos', PromoController::class)->only(['index', 'show']);
+Route::apiResource('sitemaps', SitemapController::class)->only(['index', 'show']);
+Route::apiResource('socials', SocialController::class)->only(['index', 'show']);
+
+// Route d'API protéger par Sanctum pour la modification de données
 Route::middleware('auth:sanctum')->group( function () {
-    Route::apiResource('socials', SocialController::class);
-    Route::apiResource('langs', LangController::class);
-    Route::apiResource('roles', RoleController::class);
-    Route::apiResource('users', UserController::class);
-    Route::apiResource('customers', CustomerController::class);
-    Route::apiResource('reviews', ReviewController::class);
-    Route::apiResource('heroes', HeroController::class);
-    Route::apiResource('articles', ArticleController::class);
-    Route::apiResource('features', FeatureController::class);
-    Route::apiResource('products', ProductController::class);
-    Route::apiResource('promos', PromoController::class);
-    Route::apiResource('sitemaps', SitemapController::class);
+    Route::apiResource('langs', LangController::class)->except(['index', 'show']);
+    Route::apiResource('roles', RoleController::class)->except(['index', 'show']);
+    Route::apiResource('users', UserController::class)->except(['index', 'show']);
+    Route::apiResource('customers', CustomerController::class)->except(['index', 'show']);
+    Route::apiResource('reviews', ReviewController::class)->except(['index', 'show']);
+    Route::apiResource('heroes', HeroController::class)->except(['index', 'show']);
+    Route::apiResource('articles', ArticleController::class)->except(['index', 'show']);
+    Route::apiResource('features', FeatureController::class)->except(['index', 'show']);
+    Route::apiResource('products', ProductController::class)->except(['index', 'show']);
+    Route::apiResource('promos', PromoController::class)->except(['index', 'show']);
+    Route::apiResource('sitemaps', SitemapController::class)->except(['index', 'show']);
+    Route::apiResource('socials', SocialController::class)->except(['index', 'show']);
 });
