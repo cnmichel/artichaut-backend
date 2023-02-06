@@ -31,7 +31,8 @@ class UserController extends Controller
         $request->validate([
             'email'     => 'required|email|unique',
             'password'  => 'required|password',
-            'avatar'    => 'image'
+            'avatar'    => 'image',
+            'role_id'   => 'required|exists:roles,id'
         ]);
 
         $newUser = new User([
@@ -43,7 +44,7 @@ class UserController extends Controller
 
         $newUser->save();
 
-        return response()->json($newUser);
+        return response()->json($newUser, 201);
     }
 
     /**
@@ -70,16 +71,22 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
+        $email = $request->has('email') ? $request->get('email') : $user->email;
+        $password = $request->has('password') ? $request->get('password') : $user->password;
+        $avatar = $request->has('avatar') ? $request->get('avatar') : $user->avatar;
+        $role_id = $request->has('role_id') ? $request->get('role_id') : $user->role_id;
+
         $request->validate([
-            'email'     => 'required|email|unique',
-            'password'  => 'required|password',
-            'avatar'    => 'image'
+            'email'     => 'sometimes|required|email|unique',
+            'password'  => 'sometimes|required|password',
+            'avatar'    => 'image',
+            'role_id'   => 'sometimes|required|exists:roles,id'
         ]);
 
-        $user->email = $request->get('email');
-        $user->password = $request->get('password');
-        $user->avatar = $request->get('avatar');
-        $user->role_id = $request->get('role_id');
+        $user->email = $email;
+        $user->password = $password;
+        $user->avatar = $avatar;
+        $user->role_id = $role_id;
 
         $user->save();
 

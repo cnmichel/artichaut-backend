@@ -38,7 +38,7 @@ class RoleController extends Controller
 
         $newRole->save();
 
-        return response()->json($newRole);
+        return response()->json($newRole, 201);
     }
 
     /**

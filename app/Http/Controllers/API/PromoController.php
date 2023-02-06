@@ -28,20 +28,22 @@ class PromoController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:50',
-            'content' => 'required|max:50',
+            'name'      => 'required|max:50',
+            'content'   => 'required|',
+            'active'    => 'required|boolean',
+            'lang_id'   => 'required|exists:langs,id'
         ]);
 
         $newPromo = new Promo([
-            'name' => $request->get('name'),
-            'content' => $request->get('content'),
-            'active' => $request->get('active'),
-            'lang_id' => $request->get('lang_id'),
+            'name'      => $request->get('name'),
+            'content'   => $request->get('content'),
+            'active'    => $request->get('active'),
+            'lang_id'   => $request->get('lang_id'),
         ]);
 
         $newPromo->save();
 
-        return response()->json($newPromo);
+        return response()->json($newPromo, 201);
     }
 
     /**
@@ -67,15 +69,22 @@ class PromoController extends Controller
     {
         $promo = Promo::findOrFail($id);
 
+        $name = $request->has('name') ? $request->get('name') : $promo->name;
+        $content = $request->has('content') ? $request->get('content') : $promo->content;
+        $active = $request->has('active') ? $request->get('active') : $promo->active;
+        $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $promo->lang_id;
+
         $request->validate([
-            'name' => 'required|max:50',
-            'content' => 'required|max:50',
+            'name'      => 'sometimes|required|max:50',
+            'content'   => 'sometimes|required|',
+            'active'    => 'sometimes|required|boolean',
+            'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
-        $promo->name = $request->get('name');
-        $promo->content = $request->get('content');
-        $promo->active = $request->get('active');
-        $promo->lang_id = $request->get('lang_id');
+        $promo->name = $name;
+        $promo->content = $content;
+        $promo->active = $active;
+        $promo->lang_id = $lang_id;
 
         $promo->save();
 

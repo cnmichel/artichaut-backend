@@ -28,23 +28,24 @@ class FeatureController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|max:50',
-            'content' => 'required|max:255',
-            'icon' =>  'required|max:50',
-            'order' => 'required'
+            'name'      => 'required|max:50',
+            'content'   => 'required|max:255',
+            'icon'      => 'required|max:50',
+            'order'     => 'required|integer',
+            'lang_id'   => 'required|exists:langs,id'
         ]);
 
         $newFeature = new Feature([
-            'title' => $request->get('title'),
-            'content' => $request->get('content'),
-            'icon' => $request->get('icon'),
-            'order' => $request->get('order'),
-            'lang_id' => $request->get('lang_id')
+            'name'      => $request->get('name'),
+            'content'   => $request->get('content'),
+            'icon'      => $request->get('icon'),
+            'order'     => $request->get('order'),
+            'lang_id'   => $request->get('lang_id')
         ]);
 
         $newFeature->save();
 
-        return response()->json($newFeature);
+        return response()->json($newFeature, 201);
     }
 
     /**
@@ -70,18 +71,25 @@ class FeatureController extends Controller
     {
         $feature = Feature::findOrFail($id);
 
+        $name = $request->has('name') ? $request->get('name') : $feature->name;
+        $content = $request->has('content') ? $request->get('content') : $feature->content;
+        $icon = $request->has('icon') ? $request->get('icon') : $feature->icon;
+        $order = $request->has('order') ? $request->get('order') : $feature->order;
+        $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $feature->lang_id;
+
         $request->validate([
-            'title' => 'required|max:50',
-            'content' => 'required|max:255',
-            'icon' =>  'required|max:50',
-            'order' => 'required'
+            'name'      => 'sometimes|required|max:50',
+            'content'   => 'sometimes|required|max:255',
+            'icon'      => 'sometimes|required|max:50',
+            'order'     => 'sometimes|required|integer',
+            'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
-        $feature->title = $request->get('title');
-        $feature->content = $request->get('content');
-        $feature->icon = $request->get('icon');
-        $feature->order = $request->get('order');
-        $feature->lang_id = $request->get('lang_id');
+        $feature->name = $name;
+        $feature->content = $content;
+        $feature->icon = $icon;
+        $feature->order = $order;
+        $feature->lang_id = $lang_id;
 
         $feature->save();
 

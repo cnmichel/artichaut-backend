@@ -31,7 +31,9 @@ class ArticleController extends Controller
         $request->validate([
             'title'     => 'required|max:100',
             'content'   => 'required',
-            'image'     => 'image'
+            'image'     => 'image',
+            'user_id'   => 'required|exists:users,id',
+            'lang_id'   => 'required|exists:langs,id'
         ]);
 
         $newArticle = new Article([
@@ -44,7 +46,7 @@ class ArticleController extends Controller
 
         $newArticle->save();
 
-        return response()->json($newArticle);
+        return response()->json($newArticle, 201);
     }
 
     /**
@@ -71,16 +73,22 @@ class ArticleController extends Controller
     {
         $article = Article::findOrFail($id);
 
+        $title = $request->has('title') ? $request->get('title') : $article->title;
+        $content = $request->has('content') ? $request->get('content') : $article->content;
+        $image = $request->has('image') ? $request->get('image') : $article->image;
+        $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $article->lang_id;
+
         $request->validate([
-            'title'     => 'required|max:100',
-            'content'   => 'required',
-            'image'     => 'image'
+            'title'     => 'sometimes|required|max:100',
+            'content'   => 'sometimes|required',
+            'image'     => 'sometimes|image',
+            'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
-        $article->title = $request->get('title');
-        $article->content = $request->get('content');
-        $article->image = $request->get('image');
-        $article->lang_id = $request->get('lang_id');
+        $article->title = $title;
+        $article->content = $content;
+        $article->image = $image;
+        $article->lang_id = $lang_id;
 
         $article->save();
 

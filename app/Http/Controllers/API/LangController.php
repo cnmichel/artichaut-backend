@@ -37,7 +37,7 @@ class LangController extends Controller
 
         $newLang->save();
 
-        return response()->json($newLang);
+        return response()->json($newLang, 201);
     }
 
     /**

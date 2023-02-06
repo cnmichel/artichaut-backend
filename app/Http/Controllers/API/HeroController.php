@@ -32,7 +32,8 @@ class HeroController extends Controller
             'title'     => 'required|max:50',
             'subtitle'  => 'required|max:255',
             'image'     => 'required',
-            'cta'       => 'required'
+            'cta'       => 'required',
+            'lang_id'   => 'required|exists:langs,id'
         ]);
 
         $newHero = new Hero([
@@ -45,7 +46,7 @@ class HeroController extends Controller
 
         $newHero->save();
 
-        return response()->json($newHero);
+        return response()->json($newHero, 201);
     }
 
     /**
@@ -72,18 +73,25 @@ class HeroController extends Controller
     {
         $hero = Hero::findOrFail($id);
 
+        $title = $request->has('title') ? $request->get('title') : $hero->title;
+        $subtitle = $request->has('subtitle') ? $request->get('subtitle') : $hero->subtitle;
+        $image = $request->has('image') ? $request->get('image') : $hero->image;
+        $cta = $request->has('cta') ? $request->get('cta') : $hero->cta;
+        $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $hero->lang_id;
+
         $request->validate([
-            'title'     => 'required|max:50',
-            'subtitle'  => 'required|max:255',
-            'image'     => 'required',
-            'cta'       => 'required'
+            'title'     => 'sometimes|required|max:50',
+            'subtitle'  => 'sometimes|required|max:255',
+            'image'     => 'sometimes|required',
+            'cta'       => 'sometimes|required',
+            'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
-        $hero->title = $request->get('title');
-        $hero->subtitle = $request->get('subtitle');
-        $hero->image = $request->get('image');
-        $hero->cta = $request->get('cta');
-        $hero->lang_id = $request->get('lang_id');
+        $hero->title = $title;
+        $hero->subtitle = $subtitle;
+        $hero->image = $image;
+        $hero->cta = $cta;
+        $hero->lang_id = $lang_id;
 
         $hero->save();
 

@@ -28,19 +28,20 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:50',
-            'price' => 'required',
+            'name'      => 'required|max:50',
+            'price'     => 'required|decimal:2',
+            'lang_id'   => 'required|exists:langs,id'
         ]);
 
         $newProduct = new Product([
-            'name' => $request->get('name'),
-            'price' => $request->get('price'),
-            'lang_id' => $request->get('lang_id'),
+            'name'      => $request->get('name'),
+            'price'     => $request->get('price'),
+            'lang_id'   => $request->get('lang_id'),
         ]);
 
         $newProduct->save();
 
-        return response()->json($newProduct);
+        return response()->json($newProduct, 201);
     }
 
     /**
@@ -66,14 +67,19 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        $name = $request->has('name') ? $request->get('name') : $product->name;
+        $price = $request->has('price') ? $request->get('price') : $product->price;
+        $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $product->lang_id;
+
         $request->validate([
-            'name' => 'required|max:50',
-            'price' => 'required',
+            'name'      => 'sometimes|required|max:50',
+            'price'     => 'sometimes|required|decimal:2',
+            'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
-        $product->name = $request->get('name');
-        $product->price = $request->get('price');
-        $product->lang_id = $request->get('lang_id');
+        $product->name = $name;
+        $product->price = $price;
+        $product->lang_id = $lang_id;
 
         $product->save();
 

@@ -28,21 +28,22 @@ class SitemapController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:50',
-            'url' => 'required',
-            'order' => 'required'
+            'name'      => 'required|max:50',
+            'url'       => 'required',
+            'order'     => 'required|integer',
+            'lang_id'   => 'required|exists:langs,id'
         ]);
 
         $newSitemap = new Sitemap([
-            'name' => $request->get('name'),
-            'url' => $request->get('url'),
-            'order' => $request->get('order'),
-            'lang_id' => $request->get('lang_id'),
+            'name'      => $request->get('name'),
+            'url'       => $request->get('url'),
+            'order'     => $request->get('order'),
+            'lang_id'   => $request->get('lang_id'),
         ]);
 
         $newSitemap->save();
 
-        return response()->json($newSitemap);
+        return response()->json($newSitemap, 201);
     }
 
     /**
@@ -68,16 +69,22 @@ class SitemapController extends Controller
     {
         $sitemap = Sitemap::findOrFail($id);
 
+        $name = $request->has('name') ? $request->get('name') : $sitemap->name;
+        $url = $request->has('url') ? $request->get('url') : $sitemap->url;
+        $order = $request->has('order') ? $request->get('order') : $sitemap->order;
+        $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $sitemap->lang_id;
+
         $request->validate([
-            'name' => 'required|max:50',
-            'url' => 'required',
-            'order' => 'required'
+            'name'      => 'sometimes|required|max:50',
+            'url'       => 'sometimes|required',
+            'order'     => 'sometimes|required|integer',
+            'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
-        $sitemap->name = $request->get('name');
-        $sitemap->icon = $request->get('icon');
-        $sitemap->url = $request->get('url');
-        $sitemap->lang_id = $request->get('lang_id');
+        $sitemap->name = $name;
+        $sitemap->icon = $url;
+        $sitemap->url = $order;
+        $sitemap->lang_id = $lang_id;
 
         $sitemap->save();
 

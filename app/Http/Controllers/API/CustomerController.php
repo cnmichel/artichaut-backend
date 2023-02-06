@@ -34,7 +34,8 @@ class CustomerController extends Controller
             'address'       => 'required|max:100',
             'tel_number'    => 'required|max:13',
             'promo_10'      => 'boolean',
-            'promo_25'      => 'boolean'
+            'promo_25'      => 'boolean',
+            'user_id'       => 'required|exists:users,id'
         ]);
 
         $newCustomer = new Customer([
@@ -49,7 +50,7 @@ class CustomerController extends Controller
 
         $newCustomer->save();
 
-        return response()->json($newCustomer);
+        return response()->json($newCustomer, 201);
     }
 
     /**
@@ -76,21 +77,28 @@ class CustomerController extends Controller
     {
         $customer = Customer::findOrFail($id);
 
+        $firstname = $request->has('firstname') ? $request->get('firstname') : $customer->firstname;
+        $lastname = $request->has('lastname') ? $request->get('lastname') : $customer->lastname;
+        $address = $request->has('address') ? $request->get('address') : $customer->address;
+        $tel_number = $request->has('tel_number') ? $request->get('tel_number') : $customer->tel_number;
+        $promo_10 = $request->has('promo_10') ? $request->get('promo_10') : $customer->promo_10;
+        $promo_25 = $request->has('promo_25') ? $request->get('promo_25') : $customer->promo_25;
+
         $request->validate([
-            'firstname'     => 'required|max:50',
-            'lastname'      => 'required|max:50',
-            'address'       => 'required|max:100',
-            'tel_number'    => 'required|max:13',
-            'promo_10'      => 'boolean',
-            'promo_25'      => 'boolean'
+            'firstname'     => 'sometimes|required|max:50',
+            'lastname'      => 'sometimes|required|max:50',
+            'address'       => 'sometimes|required|max:100',
+            'tel_number'    => 'sometimes|required|max:13',
+            'promo_10'      => 'sometimes|boolean',
+            'promo_25'      => 'sometimes|boolean'
         ]);
 
-        $customer->firstname = $request->get('firstname');
-        $customer->lastname = $request->get('lastname');
-        $customer->address = $request->get('address');
-        $customer->tel_number = $request->get('tel_number');
-        $customer->promo_10 = $request->get('promo_10');
-        $customer->promo_25 = $request->get('promo_25');
+        $customer->firstname = $firstname;
+        $customer->lastname = $lastname;
+        $customer->address = $address;
+        $customer->tel_number = $tel_number;
+        $customer->promo_10 = $promo_10;
+        $customer->promo_25 = $promo_25;
 
         $customer->save();
 

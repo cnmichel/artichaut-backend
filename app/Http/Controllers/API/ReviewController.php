@@ -29,7 +29,10 @@ class ReviewController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'rating'    => 'required'
+            'rating'    => 'required',
+            'title'     => 'required|max:50',
+            'content'   => 'required',
+            'user_id'   => 'required|exists:users,id'
         ]);
 
         $newReview = new Review([
@@ -41,7 +44,7 @@ class ReviewController extends Controller
 
         $newReview->save();
 
-        return response()->json($newReview);
+        return response()->json($newReview, 201);
     }
 
     /**
@@ -68,13 +71,19 @@ class ReviewController extends Controller
     {
         $review = Review::findOrFail($id);
 
+        $rating = $request->has('rating') ? $request->get('rating') : $review->rating;
+        $title = $request->has('title') ? $request->get('title') : $review->title;
+        $content = $request->has('content') ? $request->get('content') : $review->content;
+
         $request->validate([
-            'rating'    => 'required'
+            'rating'    => 'sometimes|required',
+            'title'     => 'sometimes|required|max:50',
+            'content'   => 'sometimes|required',
         ]);
 
-        $review->rating = $request->get('rating');
-        $review->title = $request->get('title');
-        $review->content = $request->get('content');
+        $review->rating = $rating;
+        $review->title = $title;
+        $review->content = $content;
 
         $review->save();
 

@@ -28,23 +28,24 @@ class SocialController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|max:50',
-            'icon' => 'required|max:50',
-            'url' => 'required',
-            'order' => 'required'
+            'name'      => 'required|max:50',
+            'icon'      => 'required|max:50',
+            'url'       => 'required',
+            'order'     => 'required|integer',
+            'lang_id'   => 'required|exists:langs,id'
         ]);
 
         $newSocial = new Social([
-            'name' => $request->get('name'),
-            'icon' => $request->get('icon'),
-            'url' => $request->get('url'),
-            'order' => $request->get('order'),
-            'lang_id' => $request->get('lang_id'),
+            'name'      => $request->get('name'),
+            'icon'      => $request->get('icon'),
+            'url'       => $request->get('url'),
+            'order'     => $request->get('order'),
+            'lang_id'   => $request->get('lang_id'),
         ]);
 
         $newSocial->save();
 
-        return response()->json($newSocial);
+        return response()->json($newSocial, 201);
     }
 
     /**
@@ -70,18 +71,25 @@ class SocialController extends Controller
     {
         $social = Social::findOrFail($id);
 
+        $name = $request->has('name') ? $request->get('name') : $social->name;
+        $icon = $request->has('icon') ? $request->get('icon') : $social->icon;
+        $url = $request->has('url') ? $request->get('url') : $social->url;
+        $order = $request->has('order') ? $request->get('order') : $social->order;
+        $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $social->lang_id;
+
         $request->validate([
-            'name' => 'required|max:50',
-            'icon' => 'required|max:50',
-            'url' => 'required',
-            'order' => 'required'
+            'name'      => 'sometimes|required|max:50',
+            'icon'      => 'sometimes|required|max:50',
+            'url'       => 'sometimes|required',
+            'order'     => 'sometimes|required|integer',
+            'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
-        $social->name = $request->get('name');
-        $social->icon = $request->get('icon');
-        $social->url = $request->get('url');
-        $social->order = $request->get('order');
-        $social->lang_id = $request->get('lang_id');
+        $social->name = $name;
+        $social->icon = $icon;
+        $social->url = $url;
+        $social->order = $order;
+        $social->lang_id = $lang_id;
 
         $social->save();
 
