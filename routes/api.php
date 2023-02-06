@@ -15,6 +15,7 @@ use App\Http\Controllers\API\ProductController;
 use App\Http\Controllers\API\PromoController;
 use App\Http\Controllers\API\SitemapController;
 use App\Http\Controllers\API\SocialController;
+use App\Http\Controllers\API\VideoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -47,6 +48,7 @@ Route::apiResource('products', ProductController::class)->only(['index', 'show']
 Route::apiResource('promos', PromoController::class)->only(['index', 'show']);
 Route::apiResource('sitemaps', SitemapController::class)->only(['index', 'show']);
 Route::apiResource('socials', SocialController::class)->only(['index', 'show']);
+Route::apiResource('videos', VideoController::class)->only(['index', 'show']);
 
 // Route d'API protéger par Sanctum pour la modification de données
 Route::middleware('auth:sanctum')->group( function () {
@@ -62,5 +64,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('promos', PromoController::class)->except(['index', 'show']);
     Route::apiResource('sitemaps', SitemapController::class)->except(['index', 'show']);
     Route::apiResource('socials', SocialController::class)->except(['index', 'show']);
+    Route::apiResource('videos', VideoController::class)->except(['index', 'show']);
 });
 
