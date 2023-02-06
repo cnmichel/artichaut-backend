@@ -75,6 +75,7 @@ class SocialController extends Controller
         $icon = $request->has('icon') ? $request->get('icon') : $social->icon;
         $url = $request->has('url') ? $request->get('url') : $social->url;
         $order = $request->has('order') ? $request->get('order') : $social->order;
+        $active = $request->has('active') ? $request->get('active') : $social->active;
         $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $social->lang_id;
 
         $request->validate([
@@ -82,6 +83,7 @@ class SocialController extends Controller
             'icon'      => 'sometimes|required|max:50',
             'url'       => 'sometimes|required',
             'order'     => 'sometimes|required|integer',
+            'active'    => 'sometimes|required|boolean',
             'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
@@ -89,6 +91,7 @@ class SocialController extends Controller
         $social->icon = $icon;
         $social->url = $url;
         $social->order = $order;
+        $social->active = $active;
         $social->lang_id = $lang_id;
 
         $social->save();

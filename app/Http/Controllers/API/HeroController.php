@@ -77,6 +77,7 @@ class HeroController extends Controller
         $subtitle = $request->has('subtitle') ? $request->get('subtitle') : $hero->subtitle;
         $image = $request->has('image') ? $request->get('image') : $hero->image;
         $cta = $request->has('cta') ? $request->get('cta') : $hero->cta;
+        $active = $request->has('active') ? $request->get('active') : $hero->active;
         $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $hero->lang_id;
 
         $request->validate([
@@ -84,6 +85,7 @@ class HeroController extends Controller
             'subtitle'  => 'sometimes|required|max:255',
             'image'     => 'sometimes|required',
             'cta'       => 'sometimes|required',
+            'active'    => 'sometimes|required|boolean',
             'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
@@ -91,6 +93,7 @@ class HeroController extends Controller
         $hero->subtitle = $subtitle;
         $hero->image = $image;
         $hero->cta = $cta;
+        $hero->active = $active;
         $hero->lang_id = $lang_id;
 
         $hero->save();

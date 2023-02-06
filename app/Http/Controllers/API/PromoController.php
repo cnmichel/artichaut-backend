@@ -30,14 +30,12 @@ class PromoController extends Controller
         $request->validate([
             'name'      => 'required|max:50',
             'content'   => 'required|',
-            'active'    => 'required|boolean',
             'lang_id'   => 'required|exists:langs,id'
         ]);
 
         $newPromo = new Promo([
             'name'      => $request->get('name'),
             'content'   => $request->get('content'),
-            'active'    => $request->get('active'),
             'lang_id'   => $request->get('lang_id'),
         ]);
 
@@ -76,7 +74,7 @@ class PromoController extends Controller
 
         $request->validate([
             'name'      => 'sometimes|required|max:50',
-            'content'   => 'sometimes|required|',
+            'content'   => 'sometimes|required',
             'active'    => 'sometimes|required|boolean',
             'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);

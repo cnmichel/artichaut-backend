@@ -69,16 +69,19 @@ class ProductController extends Controller
 
         $name = $request->has('name') ? $request->get('name') : $product->name;
         $price = $request->has('price') ? $request->get('price') : $product->price;
+        $active = $request->has('active') ? $request->get('active') : $product->active;
         $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $product->lang_id;
 
         $request->validate([
             'name'      => 'sometimes|required|max:50',
             'price'     => 'sometimes|required|decimal:2',
+            'active'    => 'sometimes|required|boolean',
             'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
         $product->name = $name;
         $product->price = $price;
+        $product->active = $active;
         $product->lang_id = $lang_id;
 
         $product->save();

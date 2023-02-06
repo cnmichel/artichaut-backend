@@ -72,18 +72,21 @@ class SitemapController extends Controller
         $name = $request->has('name') ? $request->get('name') : $sitemap->name;
         $url = $request->has('url') ? $request->get('url') : $sitemap->url;
         $order = $request->has('order') ? $request->get('order') : $sitemap->order;
+        $active = $request->has('active') ? $request->get('active') : $sitemap->active;
         $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $sitemap->lang_id;
 
         $request->validate([
             'name'      => 'sometimes|required|max:50',
             'url'       => 'sometimes|required',
             'order'     => 'sometimes|required|integer',
+            'active'    => 'sometimes|required|boolean',
             'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
         $sitemap->name = $name;
         $sitemap->icon = $url;
         $sitemap->url = $order;
+        $sitemap->active = $active;
         $sitemap->lang_id = $lang_id;
 
         $sitemap->save();

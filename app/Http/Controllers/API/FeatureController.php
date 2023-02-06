@@ -75,6 +75,7 @@ class FeatureController extends Controller
         $content = $request->has('content') ? $request->get('content') : $feature->content;
         $icon = $request->has('icon') ? $request->get('icon') : $feature->icon;
         $order = $request->has('order') ? $request->get('order') : $feature->order;
+        $active = $request->has('active') ? $request->get('active') : $feature->active;
         $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $feature->lang_id;
 
         $request->validate([
@@ -82,6 +83,7 @@ class FeatureController extends Controller
             'content'   => 'sometimes|required|max:255',
             'icon'      => 'sometimes|required|max:50',
             'order'     => 'sometimes|required|integer',
+            'active'    => 'sometimes|required|boolean',
             'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
@@ -89,6 +91,7 @@ class FeatureController extends Controller
         $feature->content = $content;
         $feature->icon = $icon;
         $feature->order = $order;
+        $feature->active = $active;
         $feature->lang_id = $lang_id;
 
         $feature->save();
