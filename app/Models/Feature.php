@@ -19,11 +19,15 @@ class Feature extends Model
         'content',
         'icon',
         'order',
+        'active',
         'lang_id'
     ];
 
+    /**
+     * Get the lang associated with the article.
+     */
     public function lang()
     {
-        return $this->hasOne(Lang::class);
+        return $this->belongsTo(Lang::class);
     }
 }

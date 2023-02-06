@@ -19,14 +19,18 @@ class Hero extends Model
         'subtitle',
         'image',
         'cta',
+        'active',
         'lang_id'
     ];
 
     /**
      * Get the lang associated with the article.
      */
+    /**
+     * Get the lang associated with the article.
+     */
     public function lang()
     {
-        return $this->hasOne(Lang::class);
+        return $this->belongsTo(Lang::class);
     }
 }

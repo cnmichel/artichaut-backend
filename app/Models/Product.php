@@ -17,11 +17,15 @@ class Product extends Model
     protected $fillable = [
         'name',
         'price',
+        'active',
         'lang_id'
     ];
 
+    /**
+     * Get the lang associated with the article.
+     */
     public function lang()
     {
-        return $this->hasOne(Lang::class);
+        return $this->belongsTo(Lang::class);
     }
 }

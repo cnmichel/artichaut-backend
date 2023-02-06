@@ -19,11 +19,15 @@ class Social extends Model
         'icon',
         'url',
         'order',
+        'active',
         'lang_id'
     ];
 
-    public function langs()
+    /**
+     * Get the lang associated with the article.
+     */
+    public function lang()
     {
-        return $this->hasMany(langs::class);
+        return $this->belongsTo(Lang::class);
     }
 }
