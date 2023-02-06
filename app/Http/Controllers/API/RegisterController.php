@@ -5,8 +5,9 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
-use Validator;
+use Illuminate\Support\Facades\Validator;
 
 class RegisterController extends BaseController
 {
@@ -17,22 +18,40 @@ class RegisterController extends BaseController
      */
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email' => 'required|email',
-            'password' => 'required',
-            'c_password' => 'required|same:password',
-        ]);
+        try {
+            //Validated
+            $validateUser = Validator::make($request->all(),
+                [
+                    'email' => 'required|email|unique:users',
+                    'password' => 'required'
+                ]);
 
-        if($validator->fails()){
-            return $this->sendError('Validation Error.', $validator->errors());
+            if($validateUser->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'validation error',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            $user = User::create([
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'role_id' => 2
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'User Created Successfully',
+                'token' => $user->createToken("API TOKEN")->plainTextToken
+            ], 200);
+
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
         }
-
-        $input = $request->all();
-        $input['password'] = bcrypt($input['password']);
-        $user = User::create($input);
-        $success['token'] =  $user->createToken('ArtichautApp')->plainTextToken;
-
-        return $this->sendResponse($success, 'User register successfully.');
     }
 
     /**
@@ -42,14 +61,56 @@ class RegisterController extends BaseController
      */
     public function login(Request $request)
     {
-        if(Auth::attempt(['email' => $request->email, 'password' => $request->password])){
-            $user = Auth::user();
-            $success['token'] =  $user->createToken('ArtichautApp')->plainTextToken;
+        try {
+            $validateUser = Validator::make($request->all(),
+            [
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
 
-            return $this->sendResponse($success, 'User login successfully.');
+            if($validateUser->fails()){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Erreur de validation',
+                    'errors' => $validateUser->errors()
+                ], 401);
+            }
+
+            if(!Auth::attempt($request->only(['email','password']))){
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Email ou mot de passe incorrecte'
+                ], 401);
+            }
+
+            $user = Auth::user();
+            return response()->json([
+                'status' => true,
+                'message' => 'Connexion réussie',
+                'email' => $user->email,
+                'role' => $user->role_id,
+                'token' => $user->createToken('ArtichautApp')->plainTextToken,
+
+            ], 200);
+
+        }catch(\Throwable $th) {
+            return response()->json([
+                'status' => false,
+                'message' => $th->getMessage()
+            ], 500);
         }
-        else{
-            return $this->sendError('Unauthorised.', ['error'=>'Unauthorised']);
+    }
+
+    /**
+     * Login api
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function verifyToken()
+    {
+        if (Auth::guard('sanctum')->check()) {
+            return response()->json(['message' => 'Token exists and is valid']);
         }
+        return response()->json(['message' => 'Token does not exist or is invalid']);
     }
 }
