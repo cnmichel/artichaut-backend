@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('subtitle', 100);
             $table->text('image');
             $table->json('cta');
+            $table->boolean('active')->default(0);
             $table->foreignId('lang_id')->constrained('langs');
         });
     }

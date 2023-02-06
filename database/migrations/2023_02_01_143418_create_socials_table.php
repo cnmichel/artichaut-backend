@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('icon', 50);
             $table->text('url');
             $table->integer('order');
+            $table->boolean('active')->default(0);
             $table->foreignId('lang_id')->constrained('langs');
         });
     }
