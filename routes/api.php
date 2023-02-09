@@ -33,6 +33,8 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('register','register');
     Route::post('login','login');
     Route::post('verifyToken', 'verifyToken');
+    Route::post('getUserByToken', 'getUserByToken');
+    Route::post('revokeToken', 'revokeToken');
 });
 
 // Route d'API pour récupérer les données

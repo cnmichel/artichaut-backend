@@ -106,11 +106,31 @@ class RegisterController extends BaseController
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    public function revokeToken()
+    {
+        if (Auth::guard('sanctum')->check()) {
+            Auth::guard('sanctum')->user()->tokens()->delete();
+            return response()->json(['status' => true],200);
+        }
+        return response()->json(['status' => false], 401);
+    }
+
+    /**
+     * Login api
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function verifyToken()
     {
         if (Auth::guard('sanctum')->check()) {
-            return response()->json(['message' => 'Token exists and is valid']);
+            return response()->json(['status' => true],200);
         }
-        return response()->json(['message' => 'Token does not exist or is invalid']);
+        return response()->json(['status' => false], 401);
+    }
+
+    public function getUserByToken()
+    {
+        $user =  Auth::guard('sanctum')->user();
+        return response()->json(['user' => $user]);
     }
 }
