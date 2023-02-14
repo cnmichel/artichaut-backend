@@ -104,9 +104,65 @@ $ sudo nano /etc/apache2/sites-available/artichauthotel.conf
     ErrorLog ${APACHE_LOG_DIR}/error.log
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
+
+<VirtualHost *:80>
+    ServerName adminer.artichauthotel.fr
+    DocumentRoot /var/www/adminer
+    <Directory /var/www/adminer>
+        FallbackResource /adminer.php
+        AllowOverride All
+    </Directory>
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
 ```
 7. Ajouter le fichier vhost crée et redémarrer apache
 ```
 $ sudo a2ensite artichauthotel.conf
 $ sudo systemctl restart apache2
+```
+8. Générer les certificats ssl et créer le fichier vhost ssl
+```
+$ sudo certbot certonly --webroot -w /var/www/artichaut-frontend -d artichauthotel.fr -d www.artichauthotel.fr -w /var/www/artichaut-backend -d api.artichauthotel.fr -w /var/www/adminer -d adminer.artichauthotel.fr
+$ sudo nano /etc/apache2/sites-available/artichauthotel-le-ssl.conf
+```
+```
+<IfModule mod_ssl.c>
+        <VirtualHost *:443>
+                ServerName artichauthotel.fr
+                ServerAlias www.artichauthotel.fr
+                DocumentRoot /var/www/artichaut-frontend/dist
+
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+                SSLCertificateFile /etc/letsencrypt/live/artichauthotel.fr/fullchain.pem
+                SSLCertificateKeyFile /etc/letsencrypt/live/artichauthotel.fr/privkey.pem
+                Include /etc/letsencrypt/options-ssl-apache.conf
+        </VirtualHost>
+        <VirtualHost *:443>
+                ServerName api.artichauthotel.fr
+                DocumentRoot /var/www/artichaut-backend/public
+
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+                SSLCertificateFile /etc/letsencrypt/live/artichauthotel.fr/fullchain.pem
+                SSLCertificateKeyFile /etc/letsencrypt/live/artichauthotel.fr/privkey.pem
+                Include /etc/letsencrypt/options-ssl-apache.conf
+        </VirtualHost>
+        <VirtualHost *:443>
+                ServerName adminer.artichauthotel.fr
+                DocumentRoot /var/www/adminer
+                <Directory /var/www/adminer>
+                    FallbackResource /adminer.php
+                </Directory>
+                ErrorLog ${APACHE_LOG_DIR}/error.log
+                CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+                SSLCertificateFile /etc/letsencrypt/live/artichauthotel.fr/fullchain.pem
+                SSLCertificateKeyFile /etc/letsencrypt/live/artichauthotel.fr/privkey.pem
+                Include /etc/letsencrypt/options-ssl-apache.conf
+        </VirtualHost>
+</IfModule>
 ```
