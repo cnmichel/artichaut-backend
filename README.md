@@ -181,15 +181,17 @@ $ sudo nano /etc/apache2/sites-available/artichauthotel-le-ssl.conf
 ```
 ### Installation adminer
 
-1. Créer le dossier adminer au chemin /var/www/html/
-
-2. Ensuite pour installer adminer lancer la commande
+1. Créer le dossier adminer
 ```
-wget "http://www.adminer.org/latest.php" -O /var/www/html/adminer.php
+$ mkdir /var/www/adminer
 ```
-3. changer les permissions du fichier donwload
+2. Récupérer le fichier de adminer
 ```
-chown -R www-data:www-data /var/www/html/adminer.php
- chmod 755 /var/www/html/adminer.php
+wget "http://www.adminer.org/latest.php" -O /var/www/adminer/adminer.php
+```
+3. Changer les permissions pour le répertoire de adminer
+```
+sudo chown -R www-data:www-data /var/www/adminer/
+sudo chmod 755 -R /var/www/adminer/
  ```
-4. Puis aller a l'adresse https://adminer.artichauthotel.fr/ pour vous connecter
+4. Acceder à adminer sur l'adresse suivante [adminer.artichauthotel.fr](https://adminer.artichauthotel.fr/)
