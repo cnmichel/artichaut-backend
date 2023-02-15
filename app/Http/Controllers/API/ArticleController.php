@@ -31,7 +31,7 @@ class ArticleController extends Controller
         $request->validate([
             'title'     => 'required|max:100',
             'content'   => 'required',
-            'image'     => 'image',
+            //'image'     => 'image|mimes:jpeg,jpg,png,bmp,gif,svg',
             'user_id'   => 'required|exists:users,id',
             'lang_id'   => 'required|exists:langs,id'
         ]);
@@ -81,7 +81,7 @@ class ArticleController extends Controller
         $request->validate([
             'title'     => 'sometimes|required|max:100',
             'content'   => 'sometimes|required',
-            'image'     => 'sometimes|image',
+            'image'     => 'sometimes',
             'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
