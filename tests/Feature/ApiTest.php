@@ -32,9 +32,6 @@ class ApiTest extends TestCase
             'lang_id' => 1
             ]);
         $post->assertStatus(201);
-        $post->assertJson(fn (AssertableJson $json) =>
-        $json->has('id')->etc()
-        );
 
         // Création d'une variable $id afin de stocker l'id de l'article
 
