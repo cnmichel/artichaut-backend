@@ -13,9 +13,21 @@ class PromoController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $promos = Promo::all();
+        // Get the params from request
+        $active = $request->get('active');
+
+        // Get a Builder instance
+        $query = Promo::query();
+
+        if ($active) {
+            // Conditionally add a WHERE
+            $query->where('active', $active)->first();
+        }
+
+        // Finish the query
+        $promos = $query->get();
         return response()->json($promos);
     }
 
