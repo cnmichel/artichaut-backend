@@ -19,6 +19,7 @@ use App\Http\Controllers\API\SocialController;
 use App\Http\Controllers\API\VideoController;
 use App\Http\Controllers\API\AddressController;
 use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\PaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,6 +58,7 @@ Route::apiResource('videos', VideoController::class)->only(['index', 'show']);
 Route::apiResource('addresses', AddressController::class)->only(['index', 'show']);
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('reservations', ReservationController::class)->only(['index','show']);
+Route::apiResource('payments', PaymentController::class)->only(['index','show']);
 
 // Route d'API protéger par Sanctum pour la modification de données
 Route::middleware('auth:sanctum')->group( function () {
@@ -76,5 +78,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('addresses', AddressController::class)->except(['index', 'show']);
     Route::apiResource('categories', CategoryController::class)->except(['index', 'show']);
     Route::apiResource('reservations', ReservationController::class)->except(['index','show']);
+    Route::apiResource('payments', PaymentController::class)->except(['index','show']);
 });
 

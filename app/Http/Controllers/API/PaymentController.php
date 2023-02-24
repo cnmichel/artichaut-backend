@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Payment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
@@ -14,7 +15,9 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        $payments = Payment::all();
+
+        return response()->json($payments);
     }
 
     /**
@@ -25,7 +28,17 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'method' => 'required|max:50'
+        ]);
+
+        $newPayment = new Payment([
+            'method' => $request->get('method')
+        ]);
+
+        $newPayment->save();
+
+        return response()->json($newPayment, 201);
     }
 
     /**
@@ -36,7 +49,9 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        //
+        $payment = Payment::findOrFail($id);
+
+        return response()->json($payments);
     }
 
     /**
@@ -48,7 +63,19 @@ class PaymentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $payment = Payment::findOrFail($id);
+
+        $method = $request->has('method') ? $request->get('method') : $payment->method;
+
+        $request->validate([
+            'method' => 'sometimes|required|max:50',
+        ]);
+
+        $payment->method = $method;
+
+        $payment->save();
+
+        return response()->json($payment);
     }
 
     /**
@@ -59,6 +86,9 @@ class PaymentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $payment = Payment::findOrFail($id);
+        $payment->delete();
+
+        return response()->json($payment::all());
     }
 }

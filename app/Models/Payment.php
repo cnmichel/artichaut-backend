@@ -14,7 +14,7 @@ class Payment extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'method',
+        'method'
     ];
 
 }
