@@ -29,7 +29,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'name'      => 'required|max:50',
-            'price'     => 'required|decimal:2',
+            'price'     => 'required|decimal:0,2',
             'lang_id'   => 'required|exists:langs,id'
         ]);
 

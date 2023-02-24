@@ -30,7 +30,8 @@ class DatabaseSeeder extends Seeder
             HeroSeeder::class,
             VideoSeeder::class,
             AddressSeeder::class,
-            PaymentSeeder::class
+            PaymentSeeder::class,
+            ReservationSeeder::class
         ]);
     }
 }
