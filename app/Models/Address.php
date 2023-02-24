@@ -22,6 +22,7 @@ class Address extends Model
        'city',
        'zip_code',
        'country',
+       'customer_id'
    ];
 
    public function customer()

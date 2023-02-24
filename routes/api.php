@@ -17,6 +17,8 @@ use App\Http\Controllers\API\PromoController;
 use App\Http\Controllers\API\SitemapController;
 use App\Http\Controllers\API\SocialController;
 use App\Http\Controllers\API\VideoController;
+use App\Http\Controllers\API\AddressController;
+use App\Http\Controllers\API\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,6 +54,8 @@ Route::apiResource('promos', PromoController::class)->only(['index', 'show']);
 Route::apiResource('sitemaps', SitemapController::class)->only(['index', 'show']);
 Route::apiResource('socials', SocialController::class)->only(['index', 'show']);
 Route::apiResource('videos', VideoController::class)->only(['index', 'show']);
+Route::apiResource('addresses', AddressController::class)->only(['index', 'show']);
+Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
 Route::apiResource('reservations', ReservationController::class)->only(['index','show']);
 
 // Route d'API protéger par Sanctum pour la modification de données
@@ -69,6 +73,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('sitemaps', SitemapController::class)->except(['index', 'show']);
     Route::apiResource('socials', SocialController::class)->except(['index', 'show']);
     Route::apiResource('videos', VideoController::class)->except(['index', 'show']);
+    Route::apiResource('addresses', AddressController::class)->except(['index', 'show']);
+    Route::apiResource('categories', CategoryController::class)->except(['index', 'show']);
     Route::apiResource('reservations', ReservationController::class)->except(['index','show']);
 });
 
