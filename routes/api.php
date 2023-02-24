@@ -69,6 +69,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('sitemaps', SitemapController::class)->except(['index', 'show']);
     Route::apiResource('socials', SocialController::class)->except(['index', 'show']);
     Route::apiResource('videos', VideoController::class)->except(['index', 'show']);
-    Route::apiResource('reservations', ReservationController::class)->only(['index','show']);
+    Route::apiResource('reservations', ReservationController::class)->except(['index','show']);
 });
 
