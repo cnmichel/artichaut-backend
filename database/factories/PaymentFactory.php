@@ -17,7 +17,6 @@ class PaymentFactory extends Factory
     public function definition()
     {
         return [
-            //
         ];
     }
 }
