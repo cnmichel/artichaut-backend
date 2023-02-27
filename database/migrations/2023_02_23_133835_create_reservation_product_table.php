@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('reservation_product', function (Blueprint $table) {
+        Schema::create('product_reservation', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
             $table->integer('quantity');
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('reservation_products');
+        Schema::dropIfExists('product_reservation');
     }
 };

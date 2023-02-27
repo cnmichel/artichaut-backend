@@ -41,6 +41,10 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('revokeToken', 'revokeToken');
 });
 
+Route::controller(ProductController::class)->group(function(){
+    Route::get('getAvailable','getAvailable');
+});
+
 // Route d'API pour récupérer les données
 Route::apiResource('langs', LangController::class)->only(['index', 'show']);
 Route::apiResource('roles', RoleController::class)->only(['index', 'show']);

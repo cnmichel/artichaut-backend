@@ -33,4 +33,9 @@ class Reservation extends Model
     {
         return $this->belongsTo(Address::class);
     }
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
 }
