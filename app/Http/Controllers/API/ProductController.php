@@ -123,33 +123,22 @@ class ProductController extends Controller
         $start_date = $request->get('start_date');
         $end_date = $request->get('end_date');
 
-        $availableProducts = DB::table('reservations')
-            ->select('reservations.*')
+        $reservations = DB::table('reservations')
+            ->select('reservations.*','product_reservation.product_id')
             ->leftJoin('product_reservation','product_reservation.reservation_id', '=', 'reservations.id')
             ->leftJoin('products', 'products.id', '=', 'product_reservation.product_id')
             ->where(function($query) use ($start_date,$end_date){
-                $query->where('reservations.end_date', '<=' ,$start_date)
-                    ->Where('reservations.start_date', '>=', $end_date)
+                $query->where('reservations.end_date', '>=' ,$start_date)
+                    ->Where('reservations.start_date', '<=', $end_date)
                     ->orWhereNull('reservations.start_date')
                     ->orWhereNull('reservations.end_date');
-            });
+            })->get();
 
-        $stantard = $availableProducts
-            ->Where('products.id', '=', 1)
-            ->get()
-            ->count();
-
-        $luxe = $availableProducts
-            ->Where('products.id', '=', 2)
-            ->get()
-            ->count();
-
-        $suite = $availableProducts
-            ->Where('products.id', '=', 3)
-            ->get()
-            ->count();
-
-        $chambres = ['ChambresStandard' => 25 - $stantard, 'ChambresLuxe' => 5 - $luxe, 'ChambreSuite' => 1 - $suite];
+        $chambres = [
+            'ChambresStandard' => 25 - $reservations->Where('product_id', 1)->count(),
+            'ChambresLuxe' => 5 - $reservations->Where('product_id', 2)->count(),
+            'ChambreSuite' => 2 - $reservations->Where('product_id', 3)->count()
+        ];
 
 
         return response()->json($chambres);
