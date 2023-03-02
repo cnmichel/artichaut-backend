@@ -28,11 +28,13 @@ class LangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'code' => 'required|max:5',
+            'code'  => 'required|max:5',
+            'label' => 'required|max:50',
         ]);
 
         $newLang = new Lang([
             'code' => $request->get('code'),
+            'label' => $request->get('label'),
         ]);
 
         $newLang->save();
@@ -65,9 +67,11 @@ class LangController extends Controller
 
         $request->validate([
             'code' => 'required|max:5',
+            'label' => 'required|max:50',
         ]);
 
         $lang->code = $request->get('code');
+        $lang->code = $request->get('label');
 
         $lang->save();
 
