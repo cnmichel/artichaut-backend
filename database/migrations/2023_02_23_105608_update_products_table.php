@@ -16,6 +16,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->string('recurrence', 10);
+            $table->string('rate', 10);
             $table->foreignId('category_id')->constrained('categories');
         });
     }
@@ -29,6 +30,7 @@ return new class extends Migration
     {
         Schema::DB('products', function (Blueprint $table) {
             $table->dropColumn(['recurrence']);
+            $table->dropColumn(['rate']);
             $table->dropForeign(['category_id']);
         });
     }
