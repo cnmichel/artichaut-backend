@@ -43,6 +43,7 @@ Route::controller(RegisterController::class)->group(function(){
 
 Route::controller(ProductController::class)->group(function(){
     Route::get('getAvailable','getAvailable');
+    Route::get('getProductsByCategory/{id}','getProductsByCategory');
 });
 
 // Route d'API pour récupérer les données

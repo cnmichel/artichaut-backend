@@ -17,6 +17,8 @@ class Product extends Model
     protected $fillable = [
         'name',
         'price',
+        'recurrence',
+        'rate',
         'active',
         'lang_id'
     ];

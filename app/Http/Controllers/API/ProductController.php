@@ -8,6 +8,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -124,7 +125,7 @@ class ProductController extends Controller
         $end_date = $request->get('end_date');
 
         $reservations = DB::table('reservations')
-            ->select('reservations.*','product_reservation.product_id')
+            ->select('reservations.*','product_reservation.product_id','products.price')
             ->leftJoin('product_reservation','product_reservation.reservation_id', '=', 'reservations.id')
             ->leftJoin('products', 'products.id', '=', 'product_reservation.product_id')
             ->where(function($query) use ($start_date,$end_date){
@@ -134,13 +135,39 @@ class ProductController extends Controller
                     ->orWhereNull('reservations.end_date');
             })->get();
 
+        $rooms = Product::where('category_id', 1)->get();
+
         $chambres = [
-            'ChambresStandard' => 25 - $reservations->Where('product_id', 1)->count(),
-            'ChambresLuxe' => 5 - $reservations->Where('product_id', 2)->count(),
-            'ChambreSuite' => 2 - $reservations->Where('product_id', 3)->count()
+
+            'standard' => [
+                'available' => 25 - $reservations->Where('product_id', 1)->count(),
+                'details' => $rooms->Where('id', 1)->first()
+            ],
+            'luxe' => [
+                'available' => 5 - $reservations->Where('product_id', 2)->count(),
+                'details' => $rooms->Where('id', 2)->first()
+            ],
+            'suite' => [
+                'available' => 2 - $reservations->Where('product_id', 3)->count(),
+                'details' => $rooms->Where('id', 3)->first()
+            ]
         ];
 
 
         return response()->json($chambres);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    function getProductsByCategory($id)
+    {
+
+        $products = Product::where('category_id', $id)->get();
+
+        return response()->json($products,200);
     }
 }
