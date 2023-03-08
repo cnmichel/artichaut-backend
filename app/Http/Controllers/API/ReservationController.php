@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
+use App\Notifications\NewReservationCreated;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Auth\Events\Registered;
 
 class ReservationController extends Controller
 {
@@ -48,6 +49,8 @@ class ReservationController extends Controller
             'address_id' => $request->get('address_id')
         ]);
 
+        event(new Registered($newReservation));
+        $newReservation->notify(new NewReservationCreated ($newReservation));
         $newReservation->save();
 
         return response()->json($newReservation, 201);

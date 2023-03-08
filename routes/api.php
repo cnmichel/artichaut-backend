@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\API\RegisterController;
 use App\Http\Controllers\API\ReservationController;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\LangController;
 use App\Http\Controllers\API\RoleController;
@@ -20,6 +20,7 @@ use App\Http\Controllers\API\VideoController;
 use App\Http\Controllers\API\AddressController;
 use App\Http\Controllers\API\CategoryController;
 use App\Http\Controllers\API\PaymentController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +40,7 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('verifyToken', 'verifyToken');
     Route::post('getUserByToken', 'getUserByToken');
     Route::post('revokeToken', 'revokeToken');
+    Route::get('verifyEmail/{hash}', 'verifyEmail');
 });
 
 Route::controller(ProductController::class)->group(function(){
@@ -84,4 +86,8 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('reservations', ReservationController::class)->except(['index','show']);
     Route::apiResource('payments', PaymentController::class)->except(['index','show']);
 });
+    //->middleware(['auth', 'verified']);
 
+Route::get('/isverified', function () {
+    return "email vérifié";
+})->middleware(['auth:sanctum', 'verified']);
