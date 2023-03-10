@@ -18,11 +18,21 @@ class Reservation extends Model
         'start_date',
         'end_date',
         'total_reservation',
-        'is_paid',
+        'status_id',
         'payment_id',
         'customer_id',
         'address_id'
     ];
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
 
     public function customer()
     {

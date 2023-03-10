@@ -20,9 +20,8 @@ class ReservationFactory extends Factory
             'start_date'=>fake()->dateTimeInInterval('+1 days', '+3 days'),
             'end_date'=>fake()->dateTimeInInterval('+4 days', '+5 days'),
             'total_reservation' => fake()->randomNumber(4, false),
-            'is_paid' => fake()->boolean(),
+            'status_id' => fake()->randomElement([1, 2, 3, 4, 5, 6]),
             'payment_id' => fake()->randomElement([1, 2]),
-
         ];
     }
 }
