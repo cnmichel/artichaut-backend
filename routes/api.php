@@ -50,6 +50,10 @@ Route::controller(UserController::class)->middleware('auth:sanctum')->group(func
     Route::get('users/current','current');
 });
 
+Route::controller(ReservationController::class)->middleware('auth:sanctum')->group(function(){
+    Route::get('reservations/customer','getCustomerReservations');
+});
+
 // Route d'API pour récupérer les données
 Route::apiResource('langs', LangController::class)->only(['index', 'show']);
 Route::apiResource('roles', RoleController::class)->only(['index', 'show']);

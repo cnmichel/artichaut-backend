@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
@@ -120,5 +121,16 @@ class ReservationController extends Controller
         return response()->json($reservation::all());
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCustomerReservations()
+    {
+        $reservations = Auth::user()->customer->reservations;
+
+        return response()->json($reservations);
+    }
 
 }

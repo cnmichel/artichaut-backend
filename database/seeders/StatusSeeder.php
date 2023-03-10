@@ -42,6 +42,11 @@ class StatusSeeder extends Seeder
                 'label_en' => 'Expired'
             ],
             [
+                'name' => 'completed',
+                'label_fr' => 'Réservation terminée',
+                'label_en' => 'Completed'
+            ],
+            [
                 'name' => 'rejected',
                 'label_fr' => 'Paiement rejeter',
                 'label_en' => 'Rejected'
