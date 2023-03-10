@@ -31,6 +31,7 @@ class DatabaseSeeder extends Seeder
             VideoSeeder::class,
             AddressSeeder::class,
             PaymentSeeder::class,
+            StatusSeeder::class,
             ReservationSeeder::class
         ]);
     }
