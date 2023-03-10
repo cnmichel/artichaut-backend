@@ -19,7 +19,6 @@ class CustomerFactory extends Factory
         return [
             'firstname' => fake()->firstName(),
             'lastname' => fake()->lastName(),
-            'address' => fake()->address(),
             'tel_number' => fake()->e164PhoneNumber(),
             'promo_10' => fake()->boolean(50),
             'promo_25' => fake()->boolean(80)

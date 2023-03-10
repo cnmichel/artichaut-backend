@@ -18,7 +18,6 @@ return new class extends Migration
             $table->timestamps();
             $table->string('firstname', 50);
             $table->string('lastname', 50);
-            $table->string('address', 200);
             $table->string('tel_number', 13);
             $table->boolean('promo_10')->default(0);
             $table->boolean('promo_25')->default(0);

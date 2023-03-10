@@ -46,6 +46,10 @@ Route::controller(ProductController::class)->group(function(){
     Route::get('getProductsByCategory/{id}','getProductsByCategory');
 });
 
+Route::controller(UserController::class)->middleware('auth:sanctum')->group(function(){
+    Route::get('users/current','current');
+});
+
 // Route d'API pour récupérer les données
 Route::apiResource('langs', LangController::class)->only(['index', 'show']);
 Route::apiResource('roles', RoleController::class)->only(['index', 'show']);
