@@ -2,15 +2,12 @@
 
 namespace App\Models;
 
-use App\Notifications\NewReservationCreated;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-class Reservation extends Authenticatable implements MustVerifyEmail
+
+class Reservation extends Model
 {
-    use HasFactory, Notifiable;
+    use HasFactory;
 
     /**
      * The attributes that are mass assignable.
@@ -21,12 +18,22 @@ class Reservation extends Authenticatable implements MustVerifyEmail
         'start_date',
         'end_date',
         'total_reservation',
-        'is_paid',
+        'status_id',
         'payment_id',
         'customer_id',
         'address_id'
     ];
-    //$reservation->notify(new NewReservationCreated($reservation));
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function payment()
+    {
+        return $this->belongsTo(Payment::class);
+    }
+
     public function customer()
     {
         return $this->belongsTo(Customer::class);
@@ -41,6 +48,4 @@ class Reservation extends Authenticatable implements MustVerifyEmail
     {
         return $this->belongsToMany(Product::class);
     }
-
-
 }

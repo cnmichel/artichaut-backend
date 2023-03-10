@@ -45,6 +45,15 @@ Route::controller(RegisterController::class)->group(function(){
 
 Route::controller(ProductController::class)->group(function(){
     Route::get('getAvailable','getAvailable');
+    Route::get('getProductsByCategory/{id}','getProductsByCategory');
+});
+
+Route::controller(UserController::class)->middleware('auth:sanctum')->group(function(){
+    Route::get('users/current','current');
+});
+
+Route::controller(ReservationController::class)->middleware('auth:sanctum')->group(function(){
+    Route::get('reservations/customer','getCustomerReservations');
 });
 
 // Route d'API pour récupérer les données

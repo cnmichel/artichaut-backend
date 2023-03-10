@@ -19,7 +19,7 @@ return new class extends Migration
             $table->date('start_date');
             $table->date('end_date');
             $table->decimal('total_reservation');
-            $table->boolean('is_paid')->default(0);
+            $table->foreignId('status_id')->constrained('statuses');
             $table->foreignId('payment_id')->constrained('payments');
             $table->foreignId('customer_id')->constrained('customers');
             $table->foreignId('address_id')->constrained('addresses');

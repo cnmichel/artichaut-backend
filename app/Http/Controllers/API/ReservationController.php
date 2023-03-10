@@ -1,18 +1,18 @@
 <?php
 
 namespace App\Http\Controllers\API;
-use App\Notifications\NewReservationCreated;
+
 use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 
 class ReservationController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -25,7 +25,7 @@ class ReservationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -33,7 +33,7 @@ class ReservationController extends Controller
             'start_date' => 'required|date|after:today',
             'end_date'   => 'required|date|after:start_date',
             'total_reservation'   => 'required|decimal:0,2',
-            'is_paid'   => 'required|boolean',
+            'status_id'   => 'required|exists:statuses,id',
             'payment_id'   => 'required|exists:payments,id',
             'customer_id'   => 'required|exists:customers,id',
             'address_id' => 'required|exists:addresses,id'
@@ -43,14 +43,12 @@ class ReservationController extends Controller
             'start_date' => $request->get('start_date'),
             'end_date' => $request->get('end_date'),
             'total_reservation' => $request->get('total_reservation'),
-            'is_paid' => $request->get('is_paid'),
+            'status_id' => $request->get('status_id'),
             'payment_id' => $request->get('payment_id'),
             'customer_id' => $request->get('customer_id'),
             'address_id' => $request->get('address_id')
         ]);
 
-        event(new Registered($newReservation));
-        $newReservation->notify(new NewReservationCreated ($newReservation));
         $newReservation->save();
 
         return response()->json($newReservation, 201);
@@ -60,7 +58,7 @@ class ReservationController extends Controller
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function show($id)
     {
@@ -74,7 +72,7 @@ class ReservationController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -83,7 +81,7 @@ class ReservationController extends Controller
         $start_date = $request->has('start_date') ? $request->get('start_date') : $reservation->start_date;
         $end_date = $request->has('end_date') ? $request->get('end_date') : $reservation->end_date;
         $total_reservation = $request->has('total_reservation') ? $request->get('total_reservation') : $reservation->total_reservation;
-        $is_paid = $request->has('is_paid') ? $request->get('is_paid') : $reservation->is_paid;
+        $status_id = $request->has('$status_id') ? $request->get('$status_id') : $reservation->status_id;
         $payment_id = $request->has('payment_id') ? $request->get('payment_id') : $reservation->payment_id;
         $address_id = $request->has('address_id') ? $request->get('address_id') : $reservation->address_id;
 
@@ -91,7 +89,7 @@ class ReservationController extends Controller
             'start_date' => 'sometime|date|after:today',
             'end_date'   => 'sometime|date|after:start_date',
             'total_reservation'   => 'sometime|decimal:0,2',
-            'is_paid'   => 'sometime|boolean',
+            'status_id'   => 'sometime|required|exists:statuses,id',
             'payment_id'   => 'sometime|required|exists:payments,id',
             'address_id' => 'sometime|required|exists:addresses,id'
         ]);
@@ -99,7 +97,7 @@ class ReservationController extends Controller
         $reservation->start_date = $start_date;
         $reservation->end_date = $end_date;
         $reservation->total_reservation = $total_reservation;
-        $reservation->is_paid = $is_paid;
+        $reservation->status_id = $status_id;
         $reservation->payment_id = $payment_id;
         $reservation->address_id = $address_id;
 
@@ -113,7 +111,7 @@ class ReservationController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
@@ -123,5 +121,16 @@ class ReservationController extends Controller
         return response()->json($reservation::all());
     }
 
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getCustomerReservations()
+    {
+        $reservations = Auth::user()->customer->reservations;
+
+        return response()->json($reservations);
+    }
 
 }

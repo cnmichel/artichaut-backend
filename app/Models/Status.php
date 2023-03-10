@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Status extends Model
 {
     use HasFactory;
 
@@ -16,19 +16,5 @@ class Product extends Model
      */
     protected $fillable = [
         'name',
-        'price',
-        'recurrence',
-        'rate',
-        'active',
-        'lang_id'
     ];
-
-    /**
-     * Get the lang associated with the article.
-     */
-    public function lang()
-    {
-        return $this->belongsTo(Lang::class);
-    }
-
 }

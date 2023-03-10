@@ -13,15 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('customers', function (Blueprint $table) {
+        Schema::create('statuses', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('label_fr');
+            $table->string('label_en');
             $table->timestamps();
-            $table->string('firstname', 50);
-            $table->string('lastname', 50);
-            $table->string('tel_number', 13);
-            $table->boolean('promo_10')->default(0);
-            $table->boolean('promo_25')->default(0);
-            $table->foreignId('user_id')->constrained('users');
         });
     }
 
@@ -32,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('customers');
+        Schema::dropIfExists('statuses');
     }
 };
