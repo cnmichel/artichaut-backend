@@ -29,7 +29,10 @@ class UserController extends Controller
     public function current()
     {
         $user = Auth::user();
-        $user->customer->addresses;
+
+        if ($user->customer()->exists()) {
+            $user->customer->addresses;
+        }
 
         return response()->json($user);
     }

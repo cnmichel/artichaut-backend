@@ -53,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * Get the role associated with the user.
+     * Get the customer associated with the user.
      */
     public function customer() {
         return $this->hasOne(Customer::class);

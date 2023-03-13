@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('city', 100);
             $table->string('zip_code', 10);
             $table->string('country', 100);
+            $table->boolean('default')->default(0);
             $table->foreignId('customer_id')->constrained('customers');
         });
     }

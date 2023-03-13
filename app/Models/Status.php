@@ -16,5 +16,12 @@ class Status extends Model
      */
     protected $fillable = [
         'name',
+        'label_fr',
+        'label_en'
     ];
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
+    }
 }
