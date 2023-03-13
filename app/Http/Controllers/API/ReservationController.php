@@ -6,6 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
+use App\Notifications\NewReservationCreated;
+
 
 class ReservationController extends Controller
 {
@@ -77,21 +80,21 @@ class ReservationController extends Controller
     public function update(Request $request, $id)
     {
         $reservation = Reservation::findOrFail($id);
-
+        $user=Auth::user();
         $start_date = $request->has('start_date') ? $request->get('start_date') : $reservation->start_date;
         $end_date = $request->has('end_date') ? $request->get('end_date') : $reservation->end_date;
         $total_reservation = $request->has('total_reservation') ? $request->get('total_reservation') : $reservation->total_reservation;
-        $status_id = $request->has('$status_id') ? $request->get('$status_id') : $reservation->status_id;
+        $status_id = $request->has('status_id') ? $request->get('status_id') : $reservation->status_id;
         $payment_id = $request->has('payment_id') ? $request->get('payment_id') : $reservation->payment_id;
         $address_id = $request->has('address_id') ? $request->get('address_id') : $reservation->address_id;
 
         $request->validate([
-            'start_date' => 'sometime|date|after:today',
-            'end_date'   => 'sometime|date|after:start_date',
-            'total_reservation'   => 'sometime|decimal:0,2',
-            'status_id'   => 'sometime|required|exists:statuses,id',
-            'payment_id'   => 'sometime|required|exists:payments,id',
-            'address_id' => 'sometime|required|exists:addresses,id'
+            'start_date' => 'sometimes|date|after:today',
+            'end_date'   => 'sometimes|date|after:start_date',
+            'total_reservation'   => 'sometimes|decimal:0,2',
+            'status_id'   => 'sometimes|required|exists:statuses,id',
+            'payment_id'   => 'sometimes|required|exists:payments,id',
+            'address_id' => 'sometimes|required|exists:addresses,id'
         ]);
 
         $reservation->start_date = $start_date;
@@ -102,8 +105,12 @@ class ReservationController extends Controller
         $reservation->address_id = $address_id;
 
 
-        $reservation->save();
+        
 
+        $reservation->save();
+        if($status_id == 3){
+            $user->notify(new NewReservationCreated($reservation));
+        }
         return response()->json($reservation);
     }
 

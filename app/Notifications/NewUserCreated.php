@@ -43,10 +43,10 @@ class NewUserCreated extends Notification
         return (new MailMessage)
             ->subject('Activation de votre compte')
             ->greeting('Bonjour')
-            ->line('Votre compte doit être vérifié' .$user->email)
+            ->line('Votre compte doit être vérifié ' .$user->email)
             ->action('cliquez ici', 'http://localhost/verifyEmail/' .$user->hash)
             ->salutation('Cordialement,')
-            ->line('Merci de votre confiance. L\équipe Artichaut');
+            ->line('Merci de votre confiance. L\'équipe Artichaut');
     }
 
     /**
