@@ -20,6 +20,7 @@ class Reservation extends Model
         'total_reservation',
         'status_id',
         'payment_id',
+        'user_id',
         'customer_id',
         'address_id'
     ];
@@ -37,6 +38,11 @@ class Reservation extends Model
     public function customer()
     {
         return $this->belongsTo(Customer::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
     public function address()

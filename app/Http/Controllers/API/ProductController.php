@@ -167,7 +167,7 @@ class ProductController extends Controller
     {
 
         $products = Product::where('category_id', $id)->get();
-
+        Log::debug($id);
         return response()->json($products,200);
     }
 }
