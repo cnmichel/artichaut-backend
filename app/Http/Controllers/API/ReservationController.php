@@ -128,7 +128,7 @@ class ReservationController extends Controller
      */
     public function getCustomerReservations()
     {
-        $reservations = Auth::user()->customer->reservations;
+        $reservations = Auth::user()->customer?->reservations->load(['status', 'payment']);
 
         return response()->json($reservations);
     }
