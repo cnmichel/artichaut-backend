@@ -13,10 +13,22 @@ class VideoController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $socials = Video::all();
-        return response()->json($socials);
+        // Get the params from request
+        $active = $request->get('active');
+
+        // Get a Builder instance
+        $query = Video::query();
+
+        if ($active) {
+            // Conditionally add a WHERE
+            $query->where('active', $active)->first();
+        }
+
+        // Finish the query
+        $videos = $query->get();
+        return response()->json($videos);
     }
 
     /**

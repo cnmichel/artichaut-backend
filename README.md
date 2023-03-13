@@ -132,7 +132,12 @@ $ sudo nano /etc/apache2/sites-available/artichauthotel-le-ssl.conf
                 ServerName artichauthotel.fr
                 ServerAlias www.artichauthotel.fr
                 DocumentRoot /var/www/artichaut-frontend/dist
-
+                
+                <Directory /var/www/artichaut-frontend>
+                    FallbackResource /index.html
+                    AllowOverride All
+                </Directory>
+                
                 ErrorLog ${APACHE_LOG_DIR}/error.log
                 CustomLog ${APACHE_LOG_DIR}/access.log combined
 
@@ -143,7 +148,12 @@ $ sudo nano /etc/apache2/sites-available/artichauthotel-le-ssl.conf
         <VirtualHost *:443>
                 ServerName api.artichauthotel.fr
                 DocumentRoot /var/www/artichaut-backend/public
-
+                
+                <Directory /var/www/artichaut-backend>
+                    Options Indexes FollowSymLinks MultiViews
+                    AllowOverride All
+                </Directory>
+                
                 ErrorLog ${APACHE_LOG_DIR}/error.log
                 CustomLog ${APACHE_LOG_DIR}/access.log combined
 
@@ -154,9 +164,12 @@ $ sudo nano /etc/apache2/sites-available/artichauthotel-le-ssl.conf
         <VirtualHost *:443>
                 ServerName adminer.artichauthotel.fr
                 DocumentRoot /var/www/adminer
+                
                 <Directory /var/www/adminer>
                     FallbackResource /adminer.php
+                    AllowOverride All
                 </Directory>
+                
                 ErrorLog ${APACHE_LOG_DIR}/error.log
                 CustomLog ${APACHE_LOG_DIR}/access.log combined
 
@@ -166,3 +179,19 @@ $ sudo nano /etc/apache2/sites-available/artichauthotel-le-ssl.conf
         </VirtualHost>
 </IfModule>
 ```
+### Installation adminer
+
+1. Créer le dossier adminer
+```
+$ mkdir /var/www/adminer
+```
+2. Récupérer le fichier de adminer
+```
+wget "http://www.adminer.org/latest.php" -O /var/www/adminer/adminer.php
+```
+3. Changer les permissions pour le répertoire de adminer
+```
+sudo chown -R www-data:www-data /var/www/adminer/
+sudo chmod 755 -R /var/www/adminer/
+ ```
+4. Acceder à adminer sur l'adresse suivante [adminer.artichauthotel.fr](https://adminer.artichauthotel.fr/)

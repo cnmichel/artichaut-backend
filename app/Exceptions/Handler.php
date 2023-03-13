@@ -52,7 +52,7 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (NotFoundHttpException $e, $request) {
-            if ($request->is('api/*')) {
+            if ($request->is('*')) {
                 return response()->json([
                     'message' => 'Enregistrement non trouvé.'
                 ], 404);
@@ -60,7 +60,7 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (ValidationException $e, $request) {
-            if ($request->is('api/*')) {
+            if ($request->is('*')) {
                 return response()->json([
                     'message' => "Données d'enregistrement non valides."
                 ], 400);
@@ -68,7 +68,7 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (AuthenticationException $e, $request) {
-            if ($request->is('api/*')) {
+            if ($request->is('*')) {
                 return response()->json([
                     'message' => "Transaction non autorisé. Vous n'êtes pas authentifier."
                 ], 401);

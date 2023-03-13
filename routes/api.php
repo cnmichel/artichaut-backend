@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\API\RegisterController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\API\ReservationController;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\API\LangController;
 use App\Http\Controllers\API\RoleController;
@@ -16,6 +17,10 @@ use App\Http\Controllers\API\PromoController;
 use App\Http\Controllers\API\SitemapController;
 use App\Http\Controllers\API\SocialController;
 use App\Http\Controllers\API\VideoController;
+use App\Http\Controllers\API\AddressController;
+use App\Http\Controllers\API\CategoryController;
+use App\Http\Controllers\API\PaymentController;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +40,20 @@ Route::controller(RegisterController::class)->group(function(){
     Route::post('verifyToken', 'verifyToken');
     Route::post('getUserByToken', 'getUserByToken');
     Route::post('revokeToken', 'revokeToken');
+    Route::get('verifyEmail/{hash}', 'verifyEmail');
+});
+
+Route::controller(ProductController::class)->group(function(){
+    Route::get('getAvailable','getAvailable');
+    Route::get('getProductsByCategory/{id}','getProductsByCategory');
+});
+
+Route::controller(UserController::class)->middleware('auth:sanctum')->group(function(){
+    Route::get('users/current','current');
+});
+
+Route::controller(ReservationController::class)->middleware('auth:sanctum')->group(function(){
+    Route::get('reservations/customer','getCustomerReservations');
 });
 
 // Route d'API pour récupérer les données
@@ -51,6 +70,10 @@ Route::apiResource('promos', PromoController::class)->only(['index', 'show']);
 Route::apiResource('sitemaps', SitemapController::class)->only(['index', 'show']);
 Route::apiResource('socials', SocialController::class)->only(['index', 'show']);
 Route::apiResource('videos', VideoController::class)->only(['index', 'show']);
+Route::apiResource('addresses', AddressController::class)->only(['index', 'show']);
+Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
+Route::apiResource('reservations', ReservationController::class)->only(['index','show']);
+Route::apiResource('payments', PaymentController::class)->only(['index','show']);
 
 // Route d'API protéger par Sanctum pour la modification de données
 Route::middleware('auth:sanctum')->group( function () {
@@ -67,5 +90,13 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('sitemaps', SitemapController::class)->except(['index', 'show']);
     Route::apiResource('socials', SocialController::class)->except(['index', 'show']);
     Route::apiResource('videos', VideoController::class)->except(['index', 'show']);
+    Route::apiResource('addresses', AddressController::class)->except(['index', 'show']);
+    Route::apiResource('categories', CategoryController::class)->except(['index', 'show']);
+    Route::apiResource('reservations', ReservationController::class)->except(['index','show']);
+    Route::apiResource('payments', PaymentController::class)->except(['index','show']);
 });
+    //->middleware(['auth', 'verified']);
 
+Route::get('/isverified', function () {
+    return "email vérifié";
+})->middleware(['auth:sanctum', 'verified']);

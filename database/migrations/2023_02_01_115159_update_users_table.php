@@ -14,6 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('hash')->nullable();
             $table->foreignId('role_id')->constrained('roles');
         });
     }
@@ -26,6 +27,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('hash');
             $table->dropForeign(['role_id']);
             $table->dropColumn('role_id');
         });
