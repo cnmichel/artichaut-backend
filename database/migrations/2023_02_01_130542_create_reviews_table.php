@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('title', 100);
             $table->text('content');
             $table->foreignId('customer_id')->constrained('customers');
+            $table->foreignId('lang_id')->constrained('langs');
         });
     }
 
