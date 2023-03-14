@@ -28,4 +28,12 @@ class Review extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    /**
+     * Get the lang associated with the review.
+     */
+    public function lang()
+    {
+        return $this->belongsTo(Lang::class);
+    }
 }
