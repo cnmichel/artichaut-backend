@@ -72,7 +72,7 @@ Route::apiResource('socials', SocialController::class)->only(['index', 'show']);
 Route::apiResource('videos', VideoController::class)->only(['index', 'show']);
 Route::apiResource('addresses', AddressController::class)->only(['index', 'show']);
 Route::apiResource('categories', CategoryController::class)->only(['index', 'show']);
-Route::apiResource('reservations', ReservationController::class)->only(['index','show']);
+Route::apiResource('reservations', ReservationController::class)->only(['index','show','store']);
 Route::apiResource('payments', PaymentController::class)->only(['index','show']);
 
 // Route d'API protéger par Sanctum pour la modification de données
@@ -92,7 +92,6 @@ Route::middleware('auth:sanctum')->group( function () {
     Route::apiResource('videos', VideoController::class)->except(['index', 'show']);
     Route::apiResource('addresses', AddressController::class)->except(['index', 'show']);
     Route::apiResource('categories', CategoryController::class)->except(['index', 'show']);
-    Route::apiResource('reservations', ReservationController::class)->except(['index','show']);
     Route::apiResource('payments', PaymentController::class)->except(['index','show']);
 });
     //->middleware(['auth', 'verified']);
