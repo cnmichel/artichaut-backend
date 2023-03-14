@@ -19,7 +19,8 @@ class ReviewFactory extends Factory
         return [
             'rating' => fake()->numberBetween(0,6),
             'title' => fake()->sentence(5),
-            'content' => fake()->text()
+            'content' => fake()->text(),
+            'lang_id' => fake()->randomElement([1, 2]),
         ];
     }
 }

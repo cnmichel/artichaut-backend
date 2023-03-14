@@ -18,7 +18,8 @@ class Review extends Model
         'rating',
         'title',
         'content',
-        'user_id'
+        'user_id',
+        'lang_id'
     ];
 
     /**

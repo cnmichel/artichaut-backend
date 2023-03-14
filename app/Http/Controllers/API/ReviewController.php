@@ -43,7 +43,8 @@ class ReviewController extends Controller
             'rating'    => 'required',
             'title'     => 'required|max:50',
             'content'   => 'required',
-            'user_id'   => 'required|exists:users,id'
+            'user_id'   => 'required|exists:users,id',
+            'lang_id'   => 'required|exists:langs,id'
         ]);
 
         $newReview = new Review([
@@ -51,6 +52,7 @@ class ReviewController extends Controller
             'title'     => $request->get('title'),
             'content'   => $request->get('content'),
             'user_id'   => $request->get('user_id'),
+            'lang_id'   => $request->get('lang_id'),
         ]);
 
         $newReview->save();
@@ -85,16 +87,19 @@ class ReviewController extends Controller
         $rating = $request->has('rating') ? $request->get('rating') : $review->rating;
         $title = $request->has('title') ? $request->get('title') : $review->title;
         $content = $request->has('content') ? $request->get('content') : $review->content;
+        $lang_id = $request->has('lang_id') ? $request->get('lang_id') : $review->lang_id;
 
         $request->validate([
             'rating'    => 'sometimes|required',
             'title'     => 'sometimes|required|max:50',
             'content'   => 'sometimes|required',
+            'lang_id'   => 'sometimes|required|exists:langs,id'
         ]);
 
         $review->rating = $rating;
         $review->title = $title;
         $review->content = $content;
+        $review->lang_id = $lang_id;
 
         $review->save();
 
