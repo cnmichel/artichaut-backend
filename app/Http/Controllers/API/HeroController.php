@@ -13,10 +13,21 @@ class HeroController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $heroes = Hero::all();
+        // Get the params from request
+        $lang = $request->get('lang_id');
 
+        // Get a Builder instance
+        $query = Hero::query();
+
+        if ($lang) {
+            // Conditionally add a WHERE
+            $query->where('lang_id', $lang);
+        }
+
+        // Finish the query
+        $heroes = $query->get();
         return response()->json($heroes);
     }
 

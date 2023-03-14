@@ -14,10 +14,21 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::all();
+        // Get the params from request
+        $lang = $request->get('lang_id');
 
+        // Get a Builder instance
+        $query = Article::query();
+
+        if ($lang) {
+            // Conditionally add a WHERE
+            $query->where('lang_id', $lang);
+        }
+
+        // Finish the query
+        $articles = $query->get();
         return response()->json($articles);
     }
 

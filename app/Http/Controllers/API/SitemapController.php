@@ -13,9 +13,21 @@ class SitemapController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sitemaps = Sitemap::all();
+        // Get the params from request
+        $lang = $request->get('lang_id');
+
+        // Get a Builder instance
+        $query = Sitemap::query();
+
+        if ($lang) {
+            // Conditionally add a WHERE
+            $query->where('lang_id', $lang);
+        }
+
+        // Finish the query
+        $sitemaps = $query->get();
         return response()->json($sitemaps);
     }
 
