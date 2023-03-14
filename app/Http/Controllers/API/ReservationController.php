@@ -33,14 +33,14 @@ class ReservationController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'start_date' => 'required|date|after:today',
-            'end_date'   => 'required|date|after:start_date',
+            'start_date' => 'required',
+            'end_date'   => 'required',
             'total_reservation'   => 'required|decimal:0,2',
             'status_id'   => 'required|exists:statuses,id',
-            'payment_id'   => 'required|exists:payments,id',
+            'payment_id'   => 'exists:payments,id',
             'user_id'   => 'required|exists:users,id',
-            'customer_id'   => 'required|exists:customers,id',
-            'address_id' => 'required|exists:addresses,id'
+            'customer_id'   => 'exists:customers,id',
+            'address_id' => 'exists:addresses,id'
         ]);
 
         $newReservation = new Reservation([
