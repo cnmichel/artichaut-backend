@@ -27,7 +27,7 @@ class ReviewController extends Controller
         }
 
         // Finish the query
-        $reviews = $query->get();
+        $reviews = $query->with('customer')->get();
         return response()->json($reviews);
     }
 
