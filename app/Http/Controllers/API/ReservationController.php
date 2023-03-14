@@ -38,6 +38,7 @@ class ReservationController extends Controller
             'total_reservation'   => 'required|decimal:0,2',
             'status_id'   => 'required|exists:statuses,id',
             'payment_id'   => 'required|exists:payments,id',
+            'user_id'   => 'required|exists:users,id',
             'customer_id'   => 'required|exists:customers,id',
             'address_id' => 'required|exists:addresses,id'
         ]);
@@ -48,6 +49,7 @@ class ReservationController extends Controller
             'total_reservation' => $request->get('total_reservation'),
             'status_id' => $request->get('status_id'),
             'payment_id' => $request->get('payment_id'),
+            'user_id' => $request->get('user_id'),
             'customer_id' => $request->get('customer_id'),
             'address_id' => $request->get('address_id')
         ]);
