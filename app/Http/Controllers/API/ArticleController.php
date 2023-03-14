@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\Article;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Laravel\Sanctum\Sanctum;
 
 class ArticleController extends Controller
 {
@@ -13,10 +14,21 @@ class ArticleController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function index()
+    public function index(Request $request)
     {
-        $articles = Article::all();
+        // Get the params from request
+        $lang = $request->get('lang_id');
 
+        // Get a Builder instance
+        $query = Article::query();
+
+        if ($lang) {
+            // Conditionally add a WHERE
+            $query->where('lang_id', $lang);
+        }
+
+        // Finish the query
+        $articles = $query->get();
         return response()->json($articles);
     }
 
@@ -31,7 +43,7 @@ class ArticleController extends Controller
         $request->validate([
             'title'     => 'required|max:100',
             'content'   => 'required',
-            'image'     => 'image',
+            //'image'     => 'image|mimes:jpeg,jpg,png,bmp,gif,svg',
             'user_id'   => 'required|exists:users,id',
             'lang_id'   => 'required|exists:langs,id'
         ]);
@@ -40,7 +52,7 @@ class ArticleController extends Controller
             'title'     => $request->get('title'),
             'content'   => $request->get('content'),
             'image'     => $request->get('image'),
-            'user_id'   => $request->get('user_id'),
+            'user_id'   => auth()->user()->id,
             'lang_id'   => $request->get('lang_id')
         ]);
 

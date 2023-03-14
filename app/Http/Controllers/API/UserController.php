@@ -5,6 +5,7 @@ namespace App\Http\Controllers\API;
 use App\Models\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -18,6 +19,22 @@ class UserController extends Controller
         $users = User::all();
 
         return response()->json($users);
+    }
+
+    /**
+     * Display the current authenticate resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function current()
+    {
+        $user = Auth::user();
+
+        if ($user->customer()->exists()) {
+            $user->customer->addresses;
+        }
+
+        return response()->json($user);
     }
 
     /**

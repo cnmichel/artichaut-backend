@@ -22,12 +22,17 @@ class DatabaseSeeder extends Seeder
             ReviewSeeder::class,
             ArticleSeeder::class,
             FeatureSeeder::class,
+            CategorySeeder::class,
             ProductSeeder::class,
             SitemapSeeder::class,
             SocialSeeder::class,
             PromoSeeder::class,
             HeroSeeder::class,
-            VideoSeeder::class
+            VideoSeeder::class,
+            AddressSeeder::class,
+            PaymentSeeder::class,
+            StatusSeeder::class,
+            ReservationSeeder::class
         ]);
     }
 }

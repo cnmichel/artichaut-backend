@@ -19,7 +19,9 @@ class ProductFactory extends Factory
         return [
             'name' => fake()->sentence(1),
             'price' => fake()->randomFloat(2,1,300),
-            'lang_id' => fake()->randomElement([1, 2]),
+            'recurrence' =>fake()->randomElement(['once','daily','weekly']),
+            'category_id' =>fake()->randomElement([1,2,3]),
+            'lang_id' => fake()->randomElement([1, 2])
         ];
     }
 }

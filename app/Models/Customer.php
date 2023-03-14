@@ -17,7 +17,6 @@ class Customer extends Model
     protected $fillable = [
         'firstname',
         'lastname',
-        'address',
         'tel_number',
         'promo_10',
         'promo_25'
@@ -29,5 +28,15 @@ class Customer extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function addresses()
+    {
+        return $this->hasMany(Address::class);
+    }
+
+    public function reservations()
+    {
+        return $this->hasMany(Reservation::class);
     }
 }

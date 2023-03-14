@@ -4,7 +4,11 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
+use DateTime;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class ProductController extends Controller
 {
@@ -29,7 +33,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'name'      => 'required|max:50',
-            'price'     => 'required|decimal:2',
+            'price'     => 'required|decimal:0,2',
             'lang_id'   => 'required|exists:langs,id'
         ]);
 
@@ -101,5 +105,69 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json($product::all());
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getAvailable(Request $request)
+    {
+
+        $request->validate([
+            'start_date'      => 'required|date|after_or_equal:now',
+            'end_date'     => 'required|date|after:start_date'
+        ]);
+
+        $start_date = $request->get('start_date');
+        $end_date = $request->get('end_date');
+
+        $reservations = DB::table('reservations')
+            ->select('reservations.*','product_reservation.product_id','products.price')
+            ->leftJoin('product_reservation','product_reservation.reservation_id', '=', 'reservations.id')
+            ->leftJoin('products', 'products.id', '=', 'product_reservation.product_id')
+            ->where(function($query) use ($start_date,$end_date){
+                $query->where('reservations.end_date', '>=' ,$start_date)
+                    ->Where('reservations.start_date', '<=', $end_date)
+                    ->orWhereNull('reservations.start_date')
+                    ->orWhereNull('reservations.end_date');
+            })->get();
+
+        $rooms = Product::where('category_id', 1)->get();
+
+        $chambres = [
+
+            'standard' => [
+                'available' => 25 - $reservations->Where('product_id', 1)->count(),
+                'details' => $rooms->Where('id', 1)->first()
+            ],
+            'luxe' => [
+                'available' => 5 - $reservations->Where('product_id', 2)->count(),
+                'details' => $rooms->Where('id', 2)->first()
+            ],
+            'suite' => [
+                'available' => 2 - $reservations->Where('product_id', 3)->count(),
+                'details' => $rooms->Where('id', 3)->first()
+            ]
+        ];
+
+
+        return response()->json($chambres);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  $id
+     * @return \Illuminate\Http\JsonResponse
+     */
+    function getProductsByCategory($id)
+    {
+
+        $products = Product::where('category_id', $id)->get();
+        Log::debug($id);
+        return response()->json($products,200);
     }
 }
