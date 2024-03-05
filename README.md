@@ -2,6 +2,11 @@
 
 
 ### Pré-requis
+```
+sudo add-apt-repository ppa:ondrej/php
+sudo apt update
+sudo apt upgrade
+```
 - PHP version >= 8
 ```
 $ sudo apt install openssl php8.2 php8.2-fpm php8.2-cli php8.2-common php8.2-bcmath php8.2-curl php8.2-mbstring php8.2-mysql php8.2-xml php8.2-zip
